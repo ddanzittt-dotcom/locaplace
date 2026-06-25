@@ -42,6 +42,18 @@ describe("DemoRepository", () => {
     expect(place?.experiences.some((card) => card.experience.id === experience.id)).toBe(true)
   })
 
+  it("Given a signed-in user When loading home Then nearby recordable places prefer unsaved places", async () => {
+    const repository = new DemoRepository()
+    await repository.signInWithEmail("yuna@loca.test")
+
+    const home = await repository.getHome()
+
+    expect(home.nearbyRecordablePlaces.slice(0, 2).map((place) => place.id)).toEqual([
+      "place-archive-93",
+      "place-blue-stairs",
+    ])
+  })
+
   it("Given saved places When creating a taste map Then the order is preserved", async () => {
     const repository = new DemoRepository()
     await repository.signInWithEmail("yuna@loca.test")

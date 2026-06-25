@@ -3,6 +3,7 @@ import { AdminPage } from "../features/admin/AdminPage"
 import { AuthPage } from "../features/auth/AuthPage"
 import { CreateExperiencePage } from "../features/create-experience/CreateExperiencePage"
 import { ExplorePage } from "../features/explore/ExplorePage"
+import { FeedPage } from "../features/feed/FeedPage"
 import { HomePage } from "../features/home/HomePage"
 import { ShareExperiencePage } from "../features/home/ShareExperiencePage"
 import { ShareMapPage } from "../features/home/ShareMapPage"
@@ -20,10 +21,13 @@ export function AppRoutes() {
       <Route path="/welcome" element={<WelcomePage />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/feed" element={<FeedPage />} />
       <Route path="/explore" element={<ExplorePage />} />
       <Route path="/create/experience" element={<CreateExperiencePage />} />
       <Route path="/places/:placeId" element={<PlaceDetailPage />} />
-      <Route path="/library" element={<LibraryPage />} />
+      <Route path="/me" element={<LibraryPage />} />
+      <Route path="/library" element={<Navigate to="/me" replace />} />
+      <Route path="/myspace" element={<Navigate to="/me" replace />} />
       <Route path="/maps/new" element={<CreateTasteMapPage />} />
       <Route path="/maps/:mapId" element={<TasteMapDetailPage />} />
       <Route path="/u/:handle" element={<ProfilePage />} />

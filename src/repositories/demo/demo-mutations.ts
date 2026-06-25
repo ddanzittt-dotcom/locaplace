@@ -91,7 +91,7 @@ export function createExperienceState(state: DemoState, input: CreateExperienceI
           sortOrder: 0,
           mimeType: input.mimeType,
           sizeBytes: input.sizeBytes,
-          durationSeconds: input.mediaType === "video" ? 10 : null,
+          durationSeconds: input.mediaType === "image" ? null : 10,
           tone: chooseTone(input.placeId),
         },
         ...state.media,

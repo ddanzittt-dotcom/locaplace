@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { BookmarkPlus, List, Map as MapIcon } from "lucide-react"
+import { BookmarkPlus, List, Map as MapIcon, Share2 } from "lucide-react"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
 import { useRepository } from "../../app/repository-context"
@@ -33,7 +33,7 @@ export function TasteMapDetailPage() {
     await queryClient.invalidateQueries()
     showToast({
       message: "취향 지도를 저장했어요.",
-      action: { label: "라이브러리", to: "/library" },
+      action: { label: "내 공간", to: "/me" },
     })
   }
 
@@ -50,24 +50,34 @@ export function TasteMapDetailPage() {
     <section className="page map-detail-page">
       <ToneMedia tone={detail.map.coverTone} shape="square" label="취향 지도 커버" />
       <div className="page-kicker">{detail.owner.name}</div>
-      <h1>{detail.map.title}</h1>
+      <div className="map-title-row">
+        <h1>{detail.map.title}</h1>
+        <fieldset className="map-title-actions">
+          <legend className="sr-only">지도 작업</legend>
+          <button
+            type="button"
+            className="map-title-action map-title-action-save"
+            onClick={() => void saveMap()}
+            aria-label="지도 저장"
+            title="지도 저장"
+          >
+            <BookmarkPlus aria-hidden="true" size={17} />
+          </button>
+          <button
+            type="button"
+            className="map-title-action map-title-action-share"
+            onClick={() => void repository.shareTasteMap(detail.map.id).then(setSharePayload)}
+            aria-label="지도 공유"
+            title="지도 공유"
+          >
+            <Share2 aria-hidden="true" size={17} />
+          </button>
+        </fieldset>
+      </div>
       <p className="lead">{detail.map.story}</p>
       <p className="card-meta">
         {detail.places.length}개 장소 · 저장 {detail.map.saveCount}
       </p>
-      <div className="utility-row">
-        <button type="button" className="primary-button" onClick={() => void saveMap()}>
-          <BookmarkPlus aria-hidden="true" size={18} />
-          지도 저장
-        </button>
-        <button
-          type="button"
-          className="secondary-button"
-          onClick={() => void repository.shareTasteMap(detail.map.id).then(setSharePayload)}
-        >
-          지도 나누기
-        </button>
-      </div>
       <div className="filter-row">
         <button
           type="button"

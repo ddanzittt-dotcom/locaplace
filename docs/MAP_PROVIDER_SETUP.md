@@ -8,4 +8,8 @@ The MVP ships with a Demo map provider. The provider contract is intentionally s
 - `search`
 - `nearby`
 
-Naver Maps is the first production target. Add `VITE_NAVER_MAP_CLIENT_ID` after creating an application in the Naver Cloud console, then implement the adapter behind the existing provider contract. The domain model must continue storing provider name and provider place ID instead of Naver-specific fields.
+Kakao Maps is the production target. Add `VITE_MAP_PROVIDER=kakao` and `VITE_KAKAO_JAVASCRIPT_KEY` after creating a Kakao Developers app and configuring the allowed web domains.
+
+The map adapter must keep Kakao-specific details behind the provider boundary. Domain records store `provider = "kakao"` and `provider_place_id` instead of Kakao-only field names.
+
+`VITE_MAP_PROVIDER=demo` remains the local default for fixture-backed QA.

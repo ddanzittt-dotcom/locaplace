@@ -1,18 +1,23 @@
 import { z } from "zod"
 
-const EnvSchema = z.object({
+const RawEnvSchema = z.object({
   DEV: z.boolean(),
   PROD: z.boolean(),
+  VITE_DEMO_MODE: z.string().default("false"),
   VITE_DATA_MODE: z.enum(["demo", "supabase"]).default("demo"),
   VITE_SUPABASE_URL: z.string().default(""),
   VITE_SUPABASE_ANON_KEY: z.string().default(""),
-  VITE_MAP_PROVIDER: z.enum(["demo", "naver"]).default("demo"),
-  VITE_NAVER_MAP_CLIENT_ID: z.string().default(""),
+  VITE_MAP_PROVIDER: z.enum(["demo", "kakao"]).default("demo"),
   VITE_KAKAO_JAVASCRIPT_KEY: z.string().default(""),
   VITE_DISABLE_REACT_DEVTOOLS: z.string().default("0"),
 })
 
-export const env = EnvSchema.parse(import.meta.env)
+const rawEnv = RawEnvSchema.parse(import.meta.env)
+
+export const env = {
+  ...rawEnv,
+  VITE_DATA_MODE: rawEnv.VITE_DEMO_MODE === "true" ? "demo" : rawEnv.VITE_DATA_MODE,
+} satisfies z.infer<typeof RawEnvSchema>
 
 export function getMissingSupabaseKeys(): readonly string[] {
   const missing: string[] = []

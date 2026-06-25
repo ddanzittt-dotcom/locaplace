@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowDown, ArrowUp, Map as MapIcon } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { useAuth } from "../../app/auth-context"
 import { useRepository } from "../../app/repository-context"
@@ -17,6 +17,15 @@ const TasteMapFormSchema = z.object({
 })
 
 type TasteMapForm = z.infer<typeof TasteMapFormSchema>
+
+function parseInitialPlaceIds(search: string): readonly string[] {
+  const placeIds = new URLSearchParams(search).get("places")
+  if (placeIds === null) return []
+  return placeIds
+    .split(",")
+    .map((placeId) => placeId.trim())
+    .filter((placeId, index, items) => placeId.length > 0 && items.indexOf(placeId) === index)
+}
 
 function moveItem(
   items: readonly string[],
@@ -40,11 +49,14 @@ export function CreateTasteMapPage() {
   const { showToast } = useToast()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const location = useLocation()
   const { data: library } = useQuery({
     queryKey: ["library"],
     queryFn: () => repository.getLibrary(),
   })
-  const [selected, setSelected] = useState<readonly string[]>([])
+  const [selected, setSelected] = useState<readonly string[]>(() =>
+    parseInitialPlaceIds(location.search),
+  )
   const {
     register,
     handleSubmit,

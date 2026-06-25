@@ -77,6 +77,8 @@ export function buildTasteMapCard(state: DemoState, mapId: string): TasteMapCard
 }
 
 export function getHomeSections(state: DemoState): HomeSections {
+  const viewerId = getViewerId(state)
+  const homeViewerId = viewerId ?? state.profiles[0]?.id ?? null
   const recent = state.recentViews
     .map((view) => {
       if (view.contentType === "taste_map") return buildTasteMapCard(state, view.contentId)
@@ -102,13 +104,19 @@ export function getHomeSections(state: DemoState): HomeSections {
     .map((item) => buildTasteMapCard(state, item.contentId))
     .filter((card): card is TasteMapCardModel => card !== null)
 
-  const popularPlaces = [...state.places].sort((left, right) => {
+  const savedPlaceIds = new Set(
+    state.userPlaces.filter((saved) => saved.userId === homeViewerId).map((saved) => saved.placeId),
+  )
+  const nearbyRecordablePlaces = [...state.places].sort((left, right) => {
+    const leftSavedPriority = savedPlaceIds.has(left.id) ? 1 : 0
+    const rightSavedPriority = savedPlaceIds.has(right.id) ? 1 : 0
+    if (leftSavedPriority !== rightSavedPriority) return leftSavedPriority - rightSavedPriority
     const rightCount = state.userPlaces.filter((saved) => saved.placeId === right.id).length
     const leftCount = state.userPlaces.filter((saved) => saved.placeId === left.id).length
     return rightCount - leftCount
   })
 
-  return { recent, nearbyExperiences, weeklyMaps, popularPlaces, curatorMaps }
+  return { recent, nearbyExperiences, weeklyMaps, nearbyRecordablePlaces, curatorMaps }
 }
 
 export function searchDemoState(state: DemoState, query: string): SearchResults {

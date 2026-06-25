@@ -1,9 +1,15 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { App } from "./app/App"
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css"
 import "./index.css"
 
-if (import.meta.env.DEV && import.meta.env["VITE_DISABLE_REACT_DEVTOOLS"] !== "1") {
+const shouldLoadReactDevTools =
+  import.meta.env.DEV &&
+  import.meta.env["VITE_DISABLE_REACT_DEVTOOLS"] !== "1" &&
+  !navigator.webdriver
+
+if (shouldLoadReactDevTools) {
   void import("react-grab")
   void import("react-scan")
 }

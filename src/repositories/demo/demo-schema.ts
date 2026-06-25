@@ -38,7 +38,7 @@ const placeSchema = z.object({
 const mediaSchema = z.object({
   id: z.string(),
   experienceId: z.string(),
-  mediaType: z.enum(["image", "video"]),
+  mediaType: z.enum(["image", "video", "audio"]),
   storagePath: z.string(),
   posterPath: z.string().nullable(),
   sortOrder: z.number(),

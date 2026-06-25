@@ -11,6 +11,8 @@ import { TasteMapCard } from "../../components/taste-map/taste-map-card"
 import { useSavePlaceAction } from "../../hooks/use-save-place-action"
 import { trackEvent } from "../../lib/analytics/analytics"
 
+const placeFilters = ["최신", "사진", "영상", "태그"] as const
+
 export function PlaceDetailPage() {
   const { placeId } = useParams()
   const repository = useRepository()
@@ -40,40 +42,47 @@ export function PlaceDetailPage() {
 
   return (
     <section className="page place-page">
-      <ToneMedia
-        tone={detail.place.representativeTone}
-        shape="wide"
-        label={detail.place.category}
-      />
-      <div className="place-title">
-        <div>
-          <div className="page-kicker">{detail.place.region}</div>
-          <h1>{detail.place.name}</h1>
-          <p>{detail.place.address}</p>
+      <div className="place-overview">
+        <ToneMedia
+          tone={detail.place.representativeTone}
+          shape="wide"
+          label={detail.place.category}
+        />
+        <div className="place-title">
+          <div className="place-title-copy">
+            <div className="page-kicker">{detail.place.region}</div>
+            <h1>{detail.place.name}</h1>
+            <p>{detail.place.address}</p>
+          </div>
+          <fieldset className="place-actions">
+            <legend className="sr-only">장소 상세 주요 액션</legend>
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() =>
+                void savePlace(
+                  { placeId: detail.place.id, sourceExperienceId: null },
+                  detail.place.name,
+                )
+              }
+            >
+              내 장소에 담기
+            </button>
+            <button type="button" className="secondary-button">
+              <MapPinned aria-hidden="true" size={18} />
+              지도에서 보기
+            </button>
+          </fieldset>
         </div>
-        <button
-          type="button"
-          className="primary-button"
-          onClick={() =>
-            void savePlace(
-              { placeId: detail.place.id, sourceExperienceId: null },
-              detail.place.name,
-            )
-          }
-        >
-          내 장소에 담기
-        </button>
       </div>
-      <div className="tag-row">
-        <Chip isActive>최신</Chip>
-        <Chip>사진</Chip>
-        <Chip>영상</Chip>
-        <Chip>태그</Chip>
-      </div>
-      <button type="button" className="secondary-button">
-        <MapPinned aria-hidden="true" size={18} />
-        지도에서 보기
-      </button>
+      <fieldset className="place-filter-row">
+        <legend className="sr-only">장소 경험 필터</legend>
+        {placeFilters.map((filter, index) => (
+          <Chip key={filter} isActive={index === 0}>
+            {filter}
+          </Chip>
+        ))}
+      </fieldset>
       <Section title="이 장소에 남겨진 경험">
         <div className="card-list">
           {detail.experiences.map((card) => (
@@ -97,7 +106,7 @@ export function PlaceDetailPage() {
           ))}
         </div>
       </Section>
-      <div className="utility-row">
+      <div className="utility-row place-utility-actions">
         <button type="button" className="secondary-button">
           정보 수정 요청
         </button>

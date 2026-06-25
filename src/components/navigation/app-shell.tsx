@@ -1,12 +1,14 @@
 import { type ReactNode, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../app/auth-context"
-import { env, isDemoProductionMode } from "../../lib/config/env"
+import { PlaceExperienceComposer } from "../../features/create-experience/PlaceExperienceComposer"
 import { BottomNav } from "./bottom-nav"
 import { CreateSheet } from "./create-sheet"
 
 export function AppShell({ children }: { readonly children: ReactNode }) {
   const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [isExperienceOpen, setIsExperienceOpen] = useState(false)
+  const navigate = useNavigate()
   const { viewer, signOut } = useAuth()
   return (
     <div className="app-shell">
@@ -15,7 +17,6 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
           LOCA
         </Link>
         <div className="header-actions">
-          {env.DEV || isDemoProductionMode() ? <span className="demo-badge">Demo Mode</span> : null}
           {viewer === null ? (
             <Link className="avatar-link" to="/auth">
               로그인
@@ -29,7 +30,19 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
       </header>
       <main>{children}</main>
       <BottomNav onCreate={() => setIsCreateOpen(true)} />
-      <CreateSheet isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)} />
+      <CreateSheet
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        onCreateExperience={() => setIsExperienceOpen(true)}
+      />
+      <PlaceExperienceComposer
+        isOpen={isExperienceOpen}
+        onClose={() => setIsExperienceOpen(false)}
+        onPublished={(experience) => {
+          setIsExperienceOpen(false)
+          navigate(`/places/${experience.placeId}`)
+        }}
+      />
     </div>
   )
 }

@@ -7,7 +7,7 @@ export type ExperienceStatus = (typeof EXPERIENCE_STATUSES)[number]
 export const MAP_STATUSES = ["draft", "published", "hidden", "deleted"] as const
 export type MapStatus = (typeof MAP_STATUSES)[number]
 
-export const MEDIA_TYPES = ["image", "video"] as const
+export const MEDIA_TYPES = ["image", "video", "audio"] as const
 export type MediaType = (typeof MEDIA_TYPES)[number]
 
 export const PROFILE_ROLES = ["user", "admin"] as const
@@ -169,7 +169,7 @@ export type HomeSections = {
   readonly recent: readonly (ExperienceCardModel | TasteMapCardModel)[]
   readonly nearbyExperiences: readonly ExperienceCardModel[]
   readonly weeklyMaps: readonly TasteMapCardModel[]
-  readonly popularPlaces: readonly Place[]
+  readonly nearbyRecordablePlaces: readonly Place[]
   readonly curatorMaps: readonly TasteMapCardModel[]
 }
 

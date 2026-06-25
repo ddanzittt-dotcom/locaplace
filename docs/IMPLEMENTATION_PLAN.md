@@ -10,7 +10,7 @@ The app follows the requested feature/component/repository layout under `src/`, 
 
 ## Routes
 
-`/welcome`, `/auth`, `/home`, `/explore`, `/create/experience`, `/places/:placeId`, `/library`, `/maps/new`, `/maps/:mapId`, `/u/:handle`, `/share/experience/:token`, `/share/map/:token`, `/admin`.
+`/welcome`, `/auth`, `/home`, `/feed`, `/explore`, `/create/experience`, `/places/:placeId`, `/me`, `/maps/new`, `/maps/:mapId`, `/u/:handle`, `/share/experience/:token`, `/share/map/:token`, `/admin`. `/library` and `/myspace` redirect to `/me` as legacy compatibility paths.
 
 ## Data Flow
 
@@ -44,6 +44,6 @@ Run `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build`, and `n
 
 ## Risks
 
-- External map credentials are absent: use Demo map provider and document Naver setup.
+- External map credentials are absent: use the Demo map provider locally and document Kakao setup for production.
 - Supabase credentials are absent: demo mode is full-fidelity locally, production warns if demo mode is enabled.
 - Video upload cannot be transcoded in-app: MIME, size, duration, poster, and retry rules are documented.

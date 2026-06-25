@@ -13,6 +13,8 @@ dist-ssr
 *.local
 playwright-report
 test-results
+.omo
+artifacts/qa
 
 # Editor directories and files
 .vscode/*

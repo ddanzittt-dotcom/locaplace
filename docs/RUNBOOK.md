@@ -6,11 +6,11 @@ Install dependencies with `npm install`, copy `.env.example` to `.env.local`, th
 
 ## Demo Mode
 
-Use `VITE_DATA_MODE=demo`. Demo data is Korean fixture data and persists in browser localStorage. Clear site data to reset.
+Use `VITE_DEMO_MODE=true` and `VITE_DATA_MODE=demo`. Demo data is Korean fixture data and persists in browser localStorage. Clear site data to reset.
 
 ## Supabase Connection
 
-Set `VITE_DATA_MODE=supabase`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_ANON_KEY`. Apply migrations before opening the app. This MVP includes Supabase schema/RLS/auth scaffolding, but the production data adapter is not complete beyond auth and will throw configuration errors for read/write content flows until implemented.
+Set `VITE_DEMO_MODE=false`, `VITE_DATA_MODE=supabase`, `VITE_SUPABASE_URL`, and `VITE_SUPABASE_ANON_KEY`. Apply migrations before opening the app. This MVP includes Supabase schema/RLS/auth scaffolding, but the production data adapter is not complete beyond auth and will throw configuration errors for read/write content flows until implemented.
 
 ## Migration
 

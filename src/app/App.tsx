@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom"
 import { AppShell } from "../components/navigation/app-shell"
-import { getMissingSupabaseKeys, isDemoProductionMode } from "../lib/config/env"
+import { getMissingSupabaseKeys } from "../lib/config/env"
 import { RepositoryConfigError } from "../repositories/contracts/errors"
 import { AppRoutes } from "../routes/AppRoutes"
 import { AuthProvider } from "./auth-context"
@@ -27,12 +27,6 @@ export function App() {
             <AuthProvider>
               <ToastProvider>
                 <AppShell>
-                  {isDemoProductionMode() ? (
-                    <div className="production-warning">
-                      Production에서 Demo Mode가 켜져 있습니다. 실제 서비스 전 Supabase 모드로
-                      전환하세요.
-                    </div>
-                  ) : null}
                   <AppRoutes />
                 </AppShell>
               </ToastProvider>

@@ -1,26 +1,39 @@
 import { ImagePlus, Map as MapIcon } from "lucide-react"
+import { useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 
 type CreateSheetProps = {
   readonly isOpen: boolean
   readonly onClose: () => void
+  readonly onCreateExperience: () => void
 }
 
-export function CreateSheet({ isOpen, onClose }: CreateSheetProps) {
+export function CreateSheet({ isOpen, onClose, onCreateExperience }: CreateSheetProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (dialog === null || !isOpen || dialog.open) return
+    dialog.showModal()
+  }, [isOpen])
+
   if (!isOpen) return null
+  const openExperienceComposer = (): void => {
+    onClose()
+    onCreateExperience()
+  }
   return (
-    <div className="sheet-layer">
-      <button type="button" className="sheet-scrim" onClick={onClose} aria-label="만들기 닫기" />
-      <section className="bottom-sheet" role="dialog" aria-modal="true" aria-label="만들기">
+    <dialog ref={dialogRef} className="sheet-layer" aria-label="만들기" onCancel={onClose}>
+      <section className="bottom-sheet">
         <div className="sheet-handle" aria-hidden="true" />
         <h2>무엇을 남길까요?</h2>
-        <Link className="create-option" to="/create/experience" onClick={onClose}>
+        <button type="button" className="create-option" onClick={openExperienceComposer}>
           <ImagePlus aria-hidden="true" size={22} />
           <span>
             <strong>장소 경험</strong>
-            <small>사진과 한 문장으로 특정 장소의 경험을 남겨보세요.</small>
+            <small>장소를 고르고 메모, 사진, 음성으로 기록해보세요.</small>
           </span>
-        </Link>
+        </button>
         <Link className="create-option" to="/maps/new" onClick={onClose}>
           <MapIcon aria-hidden="true" size={22} />
           <span>
@@ -32,6 +45,6 @@ export function CreateSheet({ isOpen, onClose }: CreateSheetProps) {
           닫기
         </button>
       </section>
-    </div>
+    </dialog>
   )
 }
