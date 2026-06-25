@@ -2345,10 +2345,11 @@ textarea {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
   gap: var(--space-2);
   overflow: hidden;
+  text-align: center;
 }
 
 .welcome-page > * {

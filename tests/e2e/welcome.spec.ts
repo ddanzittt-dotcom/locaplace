@@ -21,23 +21,31 @@ test("welcome screen keeps headline and CTA composed inside the app shell", asyn
       }
       const headingRect = heading.getBoundingClientRect()
       const buttonRect = button.getBoundingClientRect()
+      const viewportCenterX = window.innerWidth / 2
       return {
+        buttonCenterX: buttonRect.left + buttonRect.width / 2,
         buttonLeft: buttonRect.left,
         buttonRight: buttonRect.right,
         buttonTop: buttonRect.top,
         hasWelcomeCover: document.querySelector(".welcome-page .welcome-cover") !== null,
+        headingCenterX: headingRect.left + headingRect.width / 2,
+        headingCenterY: headingRect.top + headingRect.height / 2,
         headingBottom: headingRect.bottom,
         headingHeight: headingRect.height,
         headingLeft: headingRect.left,
         headingRight: headingRect.right,
         headingTop: headingRect.top,
         hasDocumentOverflow: document.documentElement.scrollWidth > window.innerWidth,
+        viewportCenterX,
       }
     })
 
     expect(metrics.hasDocumentOverflow).toBe(false)
     expect(metrics.hasWelcomeCover).toBe(false)
-    expect(metrics.headingTop).toBeLessThanOrEqual(viewport.height * 0.2)
+    expect(Math.abs(metrics.headingCenterX - metrics.viewportCenterX)).toBeLessThanOrEqual(1)
+    expect(Math.abs(metrics.buttonCenterX - metrics.viewportCenterX)).toBeLessThanOrEqual(1)
+    expect(metrics.headingCenterY).toBeGreaterThan(viewport.height * 0.4)
+    expect(metrics.headingCenterY).toBeLessThan(viewport.height * 0.55)
     expect(metrics.headingLeft).toBeGreaterThanOrEqual(16)
     expect(metrics.headingRight).toBeLessThanOrEqual(viewport.width - 16)
     expect(metrics.headingHeight).toBeGreaterThan(48)
