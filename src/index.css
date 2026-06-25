@@ -2347,6 +2347,60 @@ textarea {
   aspect-ratio: 16 / 10;
 }
 
+.welcome-page {
+  min-height: 100%;
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: var(--space-2);
+  overflow: hidden;
+}
+
+.welcome-page .welcome-cover {
+  width: min(352px, calc(100% - var(--space-8)));
+  height: min(220px, 34dvh);
+  position: absolute;
+  inset: var(--space-4) auto auto var(--space-4);
+  margin: 0;
+  border: 1px solid var(--color-border-soft);
+  background:
+    linear-gradient(135deg, rgba(255, 112, 88, 0.18), rgba(152, 230, 201, 0.08) 54%, transparent),
+    linear-gradient(90deg, rgba(249, 244, 232, 0.055) 1px, transparent 1px),
+    linear-gradient(rgba(249, 244, 232, 0.045) 1px, transparent 1px), var(--color-background);
+  background-size:
+    auto,
+    34px 34px,
+    34px 34px;
+  opacity: 0.72;
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.72) 48%, transparent 100%);
+  pointer-events: none;
+}
+
+.welcome-page > :not(.welcome-cover) {
+  max-width: 360px;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-page h1 {
+  margin-top: 0;
+  line-height: 1.14;
+}
+
+.welcome-page .lead {
+  max-width: 350px;
+  margin-top: 0;
+  text-wrap: pretty;
+}
+
+.welcome-page .primary-button {
+  width: fit-content;
+  min-width: 124px;
+  margin-top: var(--space-2);
+  padding: 0 var(--space-5);
+  font-size: 13px;
+}
+
 .profile-hero-card .profile-avatar {
   width: 64px;
   height: 64px;
