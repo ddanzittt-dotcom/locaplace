@@ -14,24 +14,18 @@ test("welcome screen keeps headline and CTA composed inside the app shell", asyn
     await expect(page.getByRole("link", { name: /시작하기/ })).toBeVisible()
 
     const metrics = await page.evaluate(() => {
-      const cover = document.querySelector(".welcome-page .welcome-cover")
       const heading = document.querySelector("h1")
       const button = document.querySelector(".welcome-page .primary-button")
-      if (
-        !(cover instanceof HTMLElement) ||
-        !(heading instanceof HTMLElement) ||
-        !(button instanceof HTMLElement)
-      ) {
-        throw new Error("Expected welcome cover, heading, and CTA to render")
+      if (!(heading instanceof HTMLElement) || !(button instanceof HTMLElement)) {
+        throw new Error("Expected welcome heading and CTA to render")
       }
-      const coverRect = cover.getBoundingClientRect()
       const headingRect = heading.getBoundingClientRect()
       const buttonRect = button.getBoundingClientRect()
       return {
         buttonLeft: buttonRect.left,
         buttonRight: buttonRect.right,
         buttonTop: buttonRect.top,
-        coverHeight: coverRect.height,
+        hasWelcomeCover: document.querySelector(".welcome-page .welcome-cover") !== null,
         headingBottom: headingRect.bottom,
         headingHeight: headingRect.height,
         headingLeft: headingRect.left,
@@ -42,8 +36,8 @@ test("welcome screen keeps headline and CTA composed inside the app shell", asyn
     })
 
     expect(metrics.hasDocumentOverflow).toBe(false)
-    expect(metrics.coverHeight).toBeLessThanOrEqual(148)
-    expect(metrics.headingTop).toBeLessThanOrEqual(viewport.height * 0.36)
+    expect(metrics.hasWelcomeCover).toBe(false)
+    expect(metrics.headingTop).toBeLessThanOrEqual(viewport.height * 0.2)
     expect(metrics.headingLeft).toBeGreaterThanOrEqual(16)
     expect(metrics.headingRight).toBeLessThanOrEqual(viewport.width - 16)
     expect(metrics.headingHeight).toBeGreaterThan(48)
